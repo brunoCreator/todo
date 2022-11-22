@@ -23,10 +23,12 @@ export default function Home({ navigation }) {
   const [checkboxes, setCheckboxes] = useState([{
     id: 1,
     title: 'Item 1',
+    com: 'Comment',
     checked: false,
   }, {
     id: 2,
     title: 'Item 2',
+    com: 'Comment',
     checked: false,
   }]);
   const [editId, setEditId] = useState();
@@ -35,10 +37,15 @@ export default function Home({ navigation }) {
     checkboxData[index].title = text;
     setCheckboxes(checkboxData);
   }
+
+  const edit2 = (text, index) => {
+    const checkboxData = [...checkboxes];
+    checkboxData[index].com = text;
+    setCheckboxes(checkboxData);
+  }
   const [expanded, setExpanded] = useState(false);
 
   const close = () => {
-
     setEditId(null);
     Keyboard.dismiss();
   }
@@ -54,6 +61,7 @@ export default function Home({ navigation }) {
     nList.push({
       id: Math.max(...checkboxes.map(o => o.id)) + 1,
       title: '',
+      com: '',
       checked: false,
     });
     setCheckboxes(nList);
@@ -84,6 +92,15 @@ export default function Home({ navigation }) {
                 onChangeText={(text) => edit(text, index)}
                 placeholder='Clique para alterar'
               /> : <ListItem.Title onPress={() => setEditId(cb.id)}>{cb.title == '' ? 'Clique 2 vezes para alterar' : cb.title}</ListItem.Title>}
+
+
+              {editId && editId == (cb.id + 'a') ? <ListItem.Input
+                style={{ textAlign: 'left' }}
+                value={cb.com}
+                onChangeText={(text) => edit2(text, index)}
+                placeholder='Clique para alterar'
+              /> : <ListItem.Subtitle onPress={() => setEditId(cb.id + 'a')}>{cb.com == '' ? 'Clique 2 vezes para alterar' : cb.com}</ListItem.Subtitle>}
+
             </ListItem.Content>
 
             <Button
